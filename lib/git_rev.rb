@@ -44,8 +44,13 @@ eos
   end
 
   class Engine < Rails::Engine
-    config.git_rev = (ENV['GIT_REV'] || `git rev-parse --short HEAD`.chomp)
-    config.to_prepare { GitRev::Engine.setup! }
+    config.to_prepare do
+      if Rails.env == "development"
+        ENV['GIT_REV'] = `git rev-parse --short HEAD`.chomp
+      else
+        ENV['GIT_REV'] ||= `git rev-parse --short HEAD`.chomp
+      end
+    end
     rake_tasks do
       load "tasks.rake"
     end

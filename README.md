@@ -11,7 +11,7 @@ gem 'git_rev', github: 'waymondo/git_rev'
 In your Rails code, you can refer to your current SHA with:
 
 ``` ruby
-Rails.application.config.git_rev
+ENV['GIT_REV']
 ```
 
 If you want to expose the revision to JavaScript too, add the following to your `application.js`:
