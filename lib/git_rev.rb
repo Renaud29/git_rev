@@ -45,6 +45,7 @@ eos
 
   class Engine < Rails::Engine
     config.git_rev = (ENV['GIT_REV'] || `git rev-parse --short HEAD`.chomp)
+    config.to_prepare { GitRev::Engine.setup! }
     rake_tasks do
       load "tasks.rake"
     end

@@ -5,7 +5,7 @@ Easily refer to your Rails app's current git revision.
 In your `Gemfile`:
 
 ``` ruby
-gem "git_rev", github: "waymondo/git_rev"
+gem 'git_rev', github: 'waymondo/git_rev'
 ```
 
 In your Rails code, you can refer to your current SHA with:
