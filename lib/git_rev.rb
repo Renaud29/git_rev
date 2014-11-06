@@ -14,7 +14,7 @@ class GitRev
 
     def setup
       append(pre_push_file, 0777) do |body, f|
-        f.puts pre_push_hook if body !~ /git_rev/
+        f.puts pre_push_hook if body !~ /GIT_REV/
       end
     end
 
@@ -44,11 +44,12 @@ eos
   end
 
   class Engine < Rails::Engine
+    initializer "git_rev.initializer", group: :assets do |app|
+      ENV['GIT_REV'] ||= `git rev-parse --short HEAD`.chomp
+    end
     config.to_prepare do
       if Rails.env == "development"
         ENV['GIT_REV'] = `git rev-parse --short HEAD`.chomp
-      else
-        ENV['GIT_REV'] ||= `git rev-parse --short HEAD`.chomp
       end
     end
     rake_tasks do
