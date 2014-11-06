@@ -8,17 +8,17 @@ class GitRev
       `git rev-parse --git-dir`.chomp
     end
 
-    def post_receive_file
-      File.join(git_dir, 'hooks', 'post-receive')
+    def pre_push_file
+      File.join(git_dir, 'hooks', 'pre-push')
     end
 
     def setup
-      append(post_receive_file, 0777) do |body, f|
-        f.puts post_receive_hook if body !~ /git_rev/
+      append(pre_push_file, 0777) do |body, f|
+        f.puts pre_push_hook if body !~ /git_rev/
       end
     end
 
-    def post_receive_hook
+    def pre_push_hook
       <<-eos
 #!/bin/sh
 remote="$1"
