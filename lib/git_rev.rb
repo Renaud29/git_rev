@@ -1,6 +1,14 @@
 require 'git_rev/version'
 
 class GitRev
+  def self.head
+    if Rails.env.development?
+      ENV['GIT_REV'] = `git rev-parse --short HEAD`.chomp
+    else
+      ENV['GIT_REV']
+    end
+  end
+
   module Heroku
     extend self
 
@@ -44,14 +52,6 @@ eos
   end
 
   class Engine < Rails::Engine
-    initializer "git_rev.initializer", group: :assets do |app|
-      ENV['GIT_REV'] ||= `git rev-parse --short HEAD`.chomp
-    end
-    config.to_prepare do
-      if Rails.env == "development"
-        ENV['GIT_REV'] = `git rev-parse --short HEAD`.chomp
-      end
-    end
     rake_tasks do
       load "tasks.rake"
     end
